@@ -2,21 +2,26 @@
 const path = require('path');
 
 module.exports = {
-    entry: './main.js',
+    entry: './main.tsx',
+    devtool: "source-map",
     output: {
         path: path.resolve(__dirname, './build/js/'),
         filename: 'bundle.js'
     },
+    resolve: {
+        extensions: [".ts", ".tsx", ".js", ".jsx"]
+    },
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
-                loader: 'babel-loader',
+                test: /\.tsx?$/,
+                loader: "ts-loader",
                 exclude: /node_modules/,
-                query: {
-                      presets: ['es2015', 'react'],
-                      "plugins": ['transform-class-properties']
-                }
+            },
+            {
+                enforce: "pre",
+                test: /\.js$/,
+                loader: "source-map-loader"
             },
             { 
                 test: /\.css$/, 
@@ -24,7 +29,6 @@ module.exports = {
             }
         ]
     },
-
     devServer: {
         contentBase: path.resolve(__dirname, "./build/")
     }
