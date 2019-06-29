@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode=development --watch & webpack-dev-server --mode=development",
+    "dev": "webpack --mode=development --watch & webpack-dev-server --mode=development & nodemon ./server/server.js",
     "build": "webpack"
   },
   "repository": {
@@ -51,6 +51,10 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.2",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.1",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.2",
