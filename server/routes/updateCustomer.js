@@ -13,7 +13,7 @@ router.put('/updateCustomer', (req, res) => {
     return;
   }
   const data = {customerID, name, birthday, gender, lastContact, customerLifetimeValue};
-  Customer.findOneAndUpdate({customerID}, data, (err, customerData) => {
+  Customer.findOneAndUpdate({customerID}, data, {new: true}, (err, customerData) => {
     if(err) {
       logger.error(`Error while updating customer ${err}`);
       res.json({status: false, message: err});

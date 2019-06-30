@@ -17,6 +17,13 @@ morgan(':method :url :status :res[content-length] - :response-time ms')
 
 app.use(bodyParser.json())
 
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  next();
+});
+
 connectDB();
 
 // CRUD APIs for customer data

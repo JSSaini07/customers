@@ -1,0 +1,78 @@
+.tableWrapper {
+  width: 98%;
+  margin-left: 1%;
+  margin-top: 20px;
+  box-shadow: 0px 10px 10px 4px #f1f1f1;
+  .tableContainer {
+    overflow: hidden;
+    border-radius: 4px;
+    height: 80vh;
+    overflow-y: auto;
+
+    .tableHeader {
+      border-bottom: 2px solid #e2e2e2;
+      margin-bottom: 10px;
+      .tableColumn {
+        font-weight: bold;
+      }
+    }
+
+    .tableRow {
+      display: block;
+      width: 100%;
+      border-bottom: 1px solid #e2e2e2;
+      transition: background 0.4s;
+      cursor: pointer;
+    }
+
+    .tableRow:hover {
+      background: #f3f3f3;
+    }
+
+    .tableColumn {
+      display: inline-block;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+      padding: 10px;
+      text-align: left;
+    }
+  }
+
+  .paginationContainer {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-top: 1px solid #e2e2e2;
+    .pageSize {
+      display: inline-block;
+      .label {
+        display: inline-block;
+      }
+      .pageSizeSelect {
+        margin-left: 10px;
+      }
+    }
+    .pagination {
+      float: right;
+      i {
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      i:hover {
+        box-shadow: 0px 0px 4px 1px #e0e0e0;
+      }
+      .disabled {
+        color: #8e8e8e;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .paginationItem {
+        display: inline-block;
+        padding: 2px 6px;
+      }
+    }
+  }
+}
