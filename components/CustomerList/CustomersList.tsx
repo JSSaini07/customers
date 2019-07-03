@@ -9,7 +9,7 @@ interface TableHeaderProps {
 
 interface CustomersListProps {
   data: RowConfig[][];
-  openEditCustomerView: (customerID: number) => void;
+  openViewCustomerView: (customerID: number) => void;
 }
 
 interface TablePaginationProps {
@@ -26,7 +26,9 @@ const TableHeader: React.FunctionComponent<TableHeaderProps> = (props) => {
     <div className="tableHeader">
       {
         data.map((header, index) => {
-          return <div key={index} className="tableColumn" style={{width: `${header.width || 0}%`}}>{header.label}</div>
+          return <div key={index} className={`tableColumn ${ header.label === "S.No." ? "snoCol" : ""}`} style={{width: `${header.width || 0}%`}}>
+            <div className="content">{header.label}</div>
+          </div>
         })
       }
     </div>
@@ -35,18 +37,20 @@ const TableHeader: React.FunctionComponent<TableHeaderProps> = (props) => {
 
 const TableRows: React.FunctionComponent<CustomersListProps> = (props) => {
   const {data = []} = props;
-  const openEditCustomerView = (rowData: RowConfig[]) => {
+  const openViewCustomerView = (rowData: RowConfig[]) => {
     const customerID = rowData.filter((rowItem) => rowItem.label === "Customer ID")[0].value as number;
-    props.openEditCustomerView(customerID);
+    props.openViewCustomerView(customerID);
   }
   return (<>
     {
       data.map((rowItem, rowIndex) => {
         return (
-          <div className="tableRow" onClick={() => openEditCustomerView(rowItem)}>
+          <div className="tableRow" onClick={() => openViewCustomerView(rowItem)}>
             {
               rowItem.map((colItem, colIndex) => {
-                return <div className="tableColumn" style={{width: `${colItem.width || 0}%`}}>{colItem.value}</div>
+                return <div className={`tableColumn ${ colItem.label === "S.No." ? "snoCol" : ""}`} style={{width: `${colItem.width || 0}%`}}>
+                  <div className="content">{colItem.value}</div>
+                </div>
               })
             }
           </div>
@@ -80,16 +84,17 @@ const TablePagination: React.FunctionComponent<TablePaginationProps> = (props) =
       <div className="pagination">
         <i className={`paginationItem fa fa-angle-double-left ${prevDisabled ? "disabled" : ''}`} onClick={goToFirstPage}></i>
         <i className={`paginationItem fa fa-angle-left ${prevDisabled ? "disabled" : ''}`} onClick={decrementPageNum}></i>
-        <div className="paginationItem">{`${selectedPage} of ${totalPages}`}</div>
+        <div className="paginationItem paginationText">{`${selectedPage} of ${totalPages}`}</div>
         <i className={`paginationItem fa fa-angle-right ${nextDisabled ? "disabled" : ''}`} onClick={incrementPageNum}></i>
         <i className={`paginationItem fa fa-angle-double-right ${nextDisabled ? "disabled" : ''}`} onClick={goToLastPage}></i>
       </div>
       <div className="pageSize">
         <div className="label">Page Size</div>
         <select className="pageSizeSelect" onChange={changePageSize}>
-          <option value="10">10</option>
-          <option value="15" selected>15</option>
-          <option value="20">20</option>
+          <option value="15">15</option>
+          <option value="20" selected>20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
         </select>
       </div>
     </div>
@@ -97,13 +102,13 @@ const TablePagination: React.FunctionComponent<TablePaginationProps> = (props) =
 }
 
 export const CustomersList: React.FunctionComponent<CustomersListProps> = (props) => {
-  const {data = [], openEditCustomerView} = props;
+  const {data = [], openViewCustomerView} = props;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [pageSize, setPageSize] = useState(15);
+  const [pageSize, setPageSize] = useState(20);
   const totalPages = Math.ceil(data.length / pageSize);
   const tableRowsData: CustomersListProps = {
     data: data.slice((selectedPage-1) * pageSize, selectedPage * pageSize),
-    openEditCustomerView,
+    openViewCustomerView,
   }
   const tablePaginationProps: TablePaginationProps = {
     totalPages,
@@ -114,8 +119,8 @@ export const CustomersList: React.FunctionComponent<CustomersListProps> = (props
   }
   return (
     <>
+      <TableHeader data={data[0]}/>
       <div className="tableContainer">
-        <TableHeader data={data[0]}/>
         <TableRows {...tableRowsData}/>
       </div>
       <TablePagination {...tablePaginationProps}/>

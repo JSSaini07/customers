@@ -3,22 +3,47 @@
   margin-left: 1%;
   margin-top: 20px;
   box-shadow: 0px 10px 10px 4px #f1f1f1;
+  .tableHeader {
+    display: table;
+    width: 100%;
+    border-bottom: 2px solid #e2e2e2;
+    .tableColumn {
+      font-weight: bold;
+      font-family: Roboto Condensed;
+      color: rgba(1,0,70,0.75);
+      font-size: 18px;
+    }
+  }
+  .tableColumn {
+    display: table-cell;
+    float: left;
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: left;
+    border-right: 1px solid #e2e2e2;
+    font-family: Roboto;
+    color: #000;
+    font-size: 14px;
+    .content {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .snoCol {
+    background: rgba(1,0,70,0.04);
+  }
+
   .tableContainer {
     overflow: hidden;
     border-radius: 4px;
-    height: 80vh;
-    overflow-y: auto;
-
-    .tableHeader {
-      border-bottom: 2px solid #e2e2e2;
-      margin-bottom: 10px;
-      .tableColumn {
-        font-weight: bold;
-      }
-    }
+    height: 76vh;
+    overflow-y: overlay;
 
     .tableRow {
-      display: block;
+      display: table;
       width: 100%;
       border-bottom: 1px solid #e2e2e2;
       transition: background 0.4s;
@@ -29,15 +54,10 @@
       background: #f3f3f3;
     }
 
-    .tableColumn {
-      display: inline-block;
-      white-space: nowrap; 
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-sizing: border-box;
-      padding: 10px;
-      text-align: left;
+    .tableRow:first-child > .tableColumn {
+        padding-top: 20px;
     }
+
   }
 
   .paginationContainer {
@@ -50,6 +70,11 @@
       display: inline-block;
       .label {
         display: inline-block;
+        font-family: Roboto;
+        font-size: 14px;
+        text-decoration: underline;
+        font-weight: bold;
+        color: #010046;
       }
       .pageSizeSelect {
         margin-left: 10px;
@@ -72,6 +97,13 @@
       .paginationItem {
         display: inline-block;
         padding: 2px 6px;
+      }
+
+      .paginationText {
+        border: 1px solid #010046;
+        border-radius: 4px;
+        color: #010046;
+        font-weight: bold;
       }
     }
   }

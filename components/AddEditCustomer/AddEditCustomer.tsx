@@ -42,14 +42,34 @@ export const AddEditCustomer: React.FunctionComponent<AddEditCustomerProps> = (p
     }
   }
 
+  const validateValues: () => string[] = () => {
+    const errors: string[] = [];
+    const fields = {"Customer ID": customerID, "First Name": first, "Last Name": last, "Gender": gender, "Birthday": birthday, "Last Contact": lastContact, "Customer Lifetime Value" : customerLifetimeValue};
+    Object.keys(fields).map((field) => {
+      // @ts-ignore
+      if(!("" + fields[field]).trim().length) {
+        errors.push(`${field} is a required field`);
+      }
+    });
+    return errors;
+  }
+
   const addCustomer = () => {
-    const values = prepData();
-    props.addCustomer(values);
+    const errors = validateValues();
+    if(!errors.length) {
+      const values = prepData();
+      props.addCustomer(values);
+    }
+    setErrors(errors);
   }
 
   const editCustomer = () => {
-    const values = prepData();
-    props.editCustomer(values);
+    const errors = validateValues();
+    if(!errors.length) {
+      const values = prepData();
+      props.editCustomer(values);
+    }
+    setErrors(errors);
   }
 
   const setFieldValue = (event: any) => {
@@ -65,7 +85,8 @@ export const AddEditCustomer: React.FunctionComponent<AddEditCustomerProps> = (p
   const [birthday, setBirthday] = useState(data.birthday); 
   const [lastContact, setLastContact] = useState(data.lastContact); 
   const [gender, setGender] = useState(data.gender); 
-  const [customerLifetimeValue, setCustomerLifetimeValue] = useState(data.customerLifetimeValue); 
+  const [customerLifetimeValue, setCustomerLifetimeValue] = useState(data.customerLifetimeValue);
+  const [errors, setErrors] = useState([]);
 
   const nameToStateMap = {
     customerID: setCustomerID,
@@ -82,69 +103,82 @@ export const AddEditCustomer: React.FunctionComponent<AddEditCustomerProps> = (p
   return (
     <div className="addEditCustomerWrapper">
       <div className="addEditCustomerContainer">
-        <div className="fieldRow">
-          <div className="fieldLabel">
-            Customer ID
+        <div className="fields">
+          <div className="fieldRow">
+            <div className="fieldLabel">
+              Customer ID
+            </div>
+            <div className="fieldValue">
+              <input name="customerID" type="text" placeholder="Enter Customer ID" disabled={mode === "edit"} value={customerID} onChange={setFieldValue}/>
+            </div>
           </div>
-          <div className="fieldValue">
-            <input name="customerID" type="text" placeholder="Enter Customer ID" disabled={mode === "edit"} value={customerID} onChange={setFieldValue}/>
+          <div className="fieldRow">
+            <div className="fieldLabel">
+              First Name
+            </div>
+            <div className="fieldValue">
+              <input name="first" type="text" placeholder="Enter First Name" value={first} onChange={setFieldValue}/>
+            </div>
           </div>
+          <div className="fieldRow">
+            <div className="fieldLabel">
+              Last Name
+            </div>
+            <div className="fieldValue">
+              <input name="last" type="text" placeholder="Enter Last Name" value={last} onChange={setFieldValue}/>
+            </div>
+          </div>
+          <div className="fieldRow">
+            <div className="fieldLabel">
+              Birth Date
+            </div>
+            <div className="fieldValue">
+              <input name="birthday" type="date" value={birthday} onChange={setFieldValue}/>
+            </div>
+          </div>
+          <div className="fieldRow">
+            <div className="fieldLabel">
+              Gender
+            </div>
+            <div className="fieldValue">
+              <select name="gender" onChange={setFieldValue}>
+                <option value="" selected = {gender === ""}></option>
+                <option value="m" selected = {gender === "m"}>Male</option>
+                <option value="w" selected = {gender === "w"}>Female</option>
+                <option value="o" selected = {gender === "o"}>Other</option>
+              </select>
+            </div>
+          </div>
+          <div className="fieldRow">
+            <div className="fieldLabel">
+              Lifetime Value
+            </div>
+            <div className="fieldValue">
+              <input name="customerLifetimeValue" type="text" placeholder="Enter lifetime value" value={customerLifetimeValue} onChange={setFieldValue}/>
+            </div>
+          </div>
+          <div className="fieldRow">
+            <div className="fieldLabel">
+              Last Contact
+            </div>
+            <div className="fieldValue">
+              <input name="lastContact" type="datetime-local" value={parseDateTime(lastContact)} onChange={setFieldValue}/>
+            </div>
+          </div>
+          { mode === "add" && <div className="addEditCustomer" onClick={addCustomer}>Add Customer</div> }
+          { mode === "edit" && <div className="addEditCustomer" onClick={editCustomer}>Edit Customer</div> }
         </div>
-        <div className="fieldRow">
-          <div className="fieldLabel">
-            First Name
-          </div>
-          <div className="fieldValue">
-            <input name="first" type="text" placeholder="Enter First Name" value={first} onChange={setFieldValue}/>
-          </div>
-        </div>
-        <div className="fieldRow">
-          <div className="fieldLabel">
-            Last Name
-          </div>
-          <div className="fieldValue">
-            <input name="last" type="text" placeholder="Enter Last Name" value={last} onChange={setFieldValue}/>
-          </div>
-        </div>
-        <div className="fieldRow">
-          <div className="fieldLabel">
-            Birth Date
-          </div>
-          <div className="fieldValue">
-            <input name="birthday" type="date" value={birthday} onChange={setFieldValue}/>
-          </div>
-        </div>
-        <div className="fieldRow">
-          <div className="fieldLabel">
-            Gender
-          </div>
-          <div className="fieldValue">
-            <select name="gender" onChange={setFieldValue}>
-              <option value="" selected = {gender === ""}></option>
-              <option value="m" selected = {gender === "m"}>Male</option>
-              <option value="w" selected = {gender === "w"}>Female</option>
-              <option value="o" selected = {gender === "o"}>Other</option>
-            </select>
-          </div>
-        </div>
-        <div className="fieldRow">
-          <div className="fieldLabel">
-            Lifetime Value
-          </div>
-          <div className="fieldValue">
-            <input name="customerLifetimeValue" type="text" placeholder="Enter lifetime value" value={customerLifetimeValue} onChange={setFieldValue}/>
-          </div>
-        </div>
-        <div className="fieldRow">
-          <div className="fieldLabel">
-            Last Contact
-          </div>
-          <div className="fieldValue">
-            <input name="lastContact" type="datetime-local" value={parseDateTime(lastContact)} onChange={setFieldValue}/>
-          </div>
-        </div>
-        { mode === "add" && <div className="addEditCustomer" onClick={addCustomer}>Add Customer</div> }
-        { mode === "edit" && <div className="addEditCustomer" onClick={editCustomer}>Edit Customer</div> }
+        {
+          errors.length ?
+          <div className="errors">
+            <div className="error-label">Errors</div>
+            {
+              errors.map((error: string) => {
+                return <div className="error-item">{error}</div>
+              })
+            }
+          </div> : null
+        }
       </div>
     </div>
   );
