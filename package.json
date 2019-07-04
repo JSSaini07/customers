@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode=development --watch",
-    "start": "webpack --mode=production & grunt less & nodemon server/server.js",
-    "server": "nodemon ./server/server.js",
+    "start": "webpack --mode=production & grunt less & node server/server.js",
+    "server": "node ./server/server.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
