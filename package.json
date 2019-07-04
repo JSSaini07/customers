@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode=development --watch",
-    "server": "nodemon ./server/server.js"
+    "start": "webpack --mode=production & grunt less & nodemon server/server.js",
+    "server": "nodemon ./server/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
