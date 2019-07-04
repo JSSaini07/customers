@@ -52,7 +52,6 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   openEditCustomerView = (customerID: number) => {
-    this.props.history.push(`/`);
     this.setState(() => ({selectedCustomer: customerID}));
     this.setState((prevState) => ({viewMode: EDIT_CUSTOMER}));
   }

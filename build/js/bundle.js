@@ -219,7 +219,7 @@ exports.AddEditCustomer = function (props) {
         var dateTime = new Date(dtime);
         var data = [dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate(), dateTime.getHours(), dateTime.getMinutes(), dateTime.getSeconds()];
         data = data.map(function (item) {
-            return "" + (item < 9 ? '0' : '') + item;
+            return "" + (item <= 9 ? '0' : '') + item;
         });
         return data[0] + "-" + data[1] + "-" + data[2] + "T" + data[3] + ":" + data[4] + ":" + data[5];
     };
@@ -285,7 +285,7 @@ exports.AddEditCustomer = function (props) {
         lastContact: setLastContact,
     };
     var mode = props.data ? 'edit' : 'add';
-    return (React.createElement("div", { key: customerID, className: "addEditCustomerWrapper" },
+    return (React.createElement("div", { className: "addEditCustomerWrapper" },
         React.createElement("div", { className: "addEditCustomerContainer" },
             React.createElement("div", { className: "fields" },
                 React.createElement("div", { className: "fieldRow" },
@@ -430,7 +430,9 @@ exports.CustomersList = function (props) {
         React.createElement(exports.TableHeader, { data: data[0] }),
         React.createElement("div", { className: "tableContainer" },
             React.createElement(exports.TableRows, __assign({}, tableRowsData))),
-        React.createElement(exports.TablePagination, __assign({}, tablePaginationProps))));
+        React.createElement(exports.TablePagination, __assign({}, tablePaginationProps)),
+        !data.length && React.createElement("div", { className: "noCustomersWrapper" },
+            React.createElement("div", { className: "noCustomers" }, "No Customers to show"))));
 };
 
 
@@ -643,7 +645,6 @@ var App = (function (_super) {
             _this.setState(function (prevState) { return ({ viewMode: main_constants_1.ADD_CUSTOMER }); });
         };
         _this.openEditCustomerView = function (customerID) {
-            _this.props.history.push("/");
             _this.setState(function () { return ({ selectedCustomer: customerID }); });
             _this.setState(function (prevState) { return ({ viewMode: main_constants_1.EDIT_CUSTOMER }); });
         };

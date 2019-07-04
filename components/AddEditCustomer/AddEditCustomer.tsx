@@ -23,7 +23,7 @@ export const AddEditCustomer: React.FunctionComponent<AddEditCustomerProps> = (p
     const dateTime = new Date(dtime);
     let data: (string | number)[] = [dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate(), dateTime.getHours(), dateTime.getMinutes(), dateTime.getSeconds()];
     data = data.map((item: number | string) => {
-      return `${item<9 ? '0' : ''}${item}`;
+      return `${item<=9 ? '0' : ''}${item}`;
     });
     return `${data[0]}-${data[1]}-${data[2]}T${data[3]}:${data[4]}:${data[5]}`
   }
@@ -101,7 +101,7 @@ export const AddEditCustomer: React.FunctionComponent<AddEditCustomerProps> = (p
   const mode = props.data ? 'edit' : 'add';
 
   return (
-    <div key={customerID} className="addEditCustomerWrapper">
+    <div className="addEditCustomerWrapper">
       <div className="addEditCustomerContainer">
         <div className="fields">
           <div className="fieldRow">

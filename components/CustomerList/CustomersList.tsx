@@ -124,6 +124,7 @@ export const CustomersList: React.FunctionComponent<CustomersListProps> = (props
         <TableRows {...tableRowsData}/>
       </div>
       <TablePagination {...tablePaginationProps}/>
+      {!data.length && <div className="noCustomersWrapper"><div className="noCustomers">No Customers to show</div></div>}
     </>
-  );
+  ) 
 }
