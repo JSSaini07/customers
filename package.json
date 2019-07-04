@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode=development --watch",
-    "build": "webpack --mode=production & grunt less & node server/server.js",
     "server": "nodemon ./server/server.js",
-    "test": "jest",
-    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",

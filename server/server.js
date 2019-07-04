@@ -14,7 +14,7 @@ const updateCustomer = require('./routes/updateCustomer');
 const deleteCustomer = require('./routes/deleteCustomer');
 
 const app = express();
-const port = process.argv.port || 3000;
+const port = process.env.PORT || 3000;
 morgan(':method :url :status :res[content-length] - :response-time ms')
 
 app.use('/static',express.static(path.join(__dirname,'../build/')))
