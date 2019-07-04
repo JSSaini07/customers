@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {CUSTOMERS_LIST, ADD_CUSTOMER ,EDIT_CUSTOMER} from "../../main.constants";
 
-interface HeaderProps {
+export interface HeaderProps {
   viewMode: string;
   openCustomerListView: () => void;
   openAddCustomerView: () => void;
@@ -16,7 +16,7 @@ const getHeaderTitle = (viewMode: string) => {
   }
 }
 
-const Header: React.FunctionComponent<HeaderProps> = (props) => {
+export const Header: React.FunctionComponent<HeaderProps> = (props) => {
   const {viewMode, openCustomerListView, openAddCustomerView} = props;
   const headerTitle = getHeaderTitle(viewMode);
   return (
@@ -31,7 +31,7 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
       }
       {
         viewMode !== CUSTOMERS_LIST && 
-        <div className="newCustomer" onClick={openCustomerListView}>
+        <div className="listCustomer" onClick={openCustomerListView}>
           <i className="fa fa-user"></i>
            Customers List
         </div>
@@ -40,4 +40,3 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
   );
 }
 
-export default Header;

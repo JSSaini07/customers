@@ -7,7 +7,7 @@ interface TableHeaderProps {
   data: RowConfig[];
 }
 
-interface CustomersListProps {
+export interface CustomersListProps {
   data: RowConfig[][];
   openViewCustomerView: (customerID: number) => void;
 }
@@ -20,7 +20,7 @@ interface TablePaginationProps {
   setPageSize: (pageSize: number) => void;
 }
 
-const TableHeader: React.FunctionComponent<TableHeaderProps> = (props) => {
+export const TableHeader: React.FunctionComponent<TableHeaderProps> = (props) => {
   const {data = []} = props;
   return (
     <div className="tableHeader">
@@ -35,7 +35,7 @@ const TableHeader: React.FunctionComponent<TableHeaderProps> = (props) => {
   );
 }
 
-const TableRows: React.FunctionComponent<CustomersListProps> = (props) => {
+export const TableRows: React.FunctionComponent<CustomersListProps> = (props) => {
   const {data = []} = props;
   const openViewCustomerView = (rowData: RowConfig[]) => {
     const customerID = rowData.filter((rowItem) => rowItem.label === "Customer ID")[0].value as number;
@@ -60,7 +60,7 @@ const TableRows: React.FunctionComponent<CustomersListProps> = (props) => {
   </>);
 }
 
-const TablePagination: React.FunctionComponent<TablePaginationProps> = (props) => {
+export const TablePagination: React.FunctionComponent<TablePaginationProps> = (props) => {
   const {totalPages = 1, selectedPage = 1, setSelectedPage = () => {}, setPageSize = () => {}} = props;
   const incrementPageNum = () => {
     setSelectedPage(selectedPage + 1);

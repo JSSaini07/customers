@@ -28,7 +28,7 @@ const typeToColorMap = (type: string) => {
   }
 }
 
-const NotificationItem: React.FunctionComponent<NotificationItemProp> = (props) => {
+export const NotificationItem: React.FunctionComponent<NotificationItemProp> = (props) => {
   const {id, type, message} = props;
   return (<div key={id} className={`notificationItem ${typeToColorMap(type)}`}>
     <i className={`notificationIcon ${typeToIconMap(type)}`}></i>
@@ -42,7 +42,7 @@ export const Notification: React.FunctionComponent<NotificationProps> = (props) 
     <div className="notificationContainer">
       {
         notifications.map((notification) => {
-          return <NotificationItem id={notification.id} type={notification.type} message={notification.message}/>
+          return <NotificationItem key={notification.id} id={notification.id} type={notification.type} message={notification.message}/>
         })
       }
     </div>

@@ -1,8 +1,9 @@
 
 import * as React from "react";
 import { Customer } from "../../main.types";
+import { emptyCustomer } from "../../main.constants";
 
-interface ViewCustomerProps {
+export interface ViewCustomerProps {
   data: Customer;
   openEditCustomerView: (customID: number) => void;
   deleteCustomer: (customID: number) => void;
@@ -12,12 +13,12 @@ interface ViewCustomerProps {
 export const ViewCustomer: React.FunctionComponent<ViewCustomerProps> = (props) => {
   const {data: {
     customerID,
-    name: {first, last,},
+    name: {first, last},
     gender,
     birthday,
     lastContact,
     customerLifetimeValue,
-  }} = props;
+  } = emptyCustomer} = props;
 
   const openEditCustomerView = () => {
     props.openEditCustomerView(customerID);
@@ -37,7 +38,12 @@ export const ViewCustomer: React.FunctionComponent<ViewCustomerProps> = (props) 
     return `${data[0]}-${data[1]}-${data[2]}T${data[3]}:${data[4]}:${data[5]}`
   }
 
-  return (
+  return (!props.data || !props.data.customerID)  ? (
+    <div className="invalidCustomerIdContainer">
+      <div className="invalidCustomerId">Invalid Customer ID</div> 
+    </div>
+  ) : 
+  (
     <div className="viewCustomerWrapper">
       <div className="viewCustomerContainer">
         <div className="fields">

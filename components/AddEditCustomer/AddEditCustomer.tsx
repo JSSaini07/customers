@@ -3,7 +3,7 @@ import * as React from "react";
 import {useState} from "react";
 import { Customer } from "../../main.types";
 
-interface AddEditCustomerProps {
+export interface AddEditCustomerProps {
   data?: Customer;
   addCustomer: (values: any) => any;
   editCustomer: (values: any) => any;
@@ -101,7 +101,7 @@ export const AddEditCustomer: React.FunctionComponent<AddEditCustomerProps> = (p
   const mode = props.data ? 'edit' : 'add';
 
   return (
-    <div className="addEditCustomerWrapper">
+    <div key={customerID} className="addEditCustomerWrapper">
       <div className="addEditCustomerContainer">
         <div className="fields">
           <div className="fieldRow">
@@ -173,8 +173,8 @@ export const AddEditCustomer: React.FunctionComponent<AddEditCustomerProps> = (p
           <div className="errors">
             <div className="error-label">Errors</div>
             {
-              errors.map((error: string) => {
-                return <div className="error-item">{error}</div>
+              errors.map((error: string, index: number) => {
+                return <div key={index} className="error-item">{error}</div>
               })
             }
           </div> : null

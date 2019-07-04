@@ -194,27 +194,6 @@ var handleFail = function (dispatch, type, message, error, notificationId) {
 
 /***/ }),
 
-/***/ "./actions/view.ts":
-/*!*************************!*\
-  !*** ./actions/view.ts ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var main_constants_1 = __webpack_require__(/*! ../main.constants */ "./main.constants.ts");
-exports.changeViewMode = function (viewMode) {
-    return {
-        type: main_constants_1.CHANGE_VIEW_MODE,
-        payload: viewMode,
-    };
-};
-
-
-/***/ }),
-
 /***/ "./components/AddEditCustomer/AddEditCustomer.tsx":
 /*!********************************************************!*\
   !*** ./components/AddEditCustomer/AddEditCustomer.tsx ***!
@@ -306,7 +285,7 @@ exports.AddEditCustomer = function (props) {
         lastContact: setLastContact,
     };
     var mode = props.data ? 'edit' : 'add';
-    return (React.createElement("div", { className: "addEditCustomerWrapper" },
+    return (React.createElement("div", { key: customerID, className: "addEditCustomerWrapper" },
         React.createElement("div", { className: "addEditCustomerContainer" },
             React.createElement("div", { className: "fields" },
                 React.createElement("div", { className: "fieldRow" },
@@ -346,8 +325,8 @@ exports.AddEditCustomer = function (props) {
             errors.length ?
                 React.createElement("div", { className: "errors" },
                     React.createElement("div", { className: "error-label" }, "Errors"),
-                    errors.map(function (error) {
-                        return React.createElement("div", { className: "error-item" }, error);
+                    errors.map(function (error, index) {
+                        return React.createElement("div", { key: index, className: "error-item" }, error);
                     })) : null)));
 };
 
@@ -377,14 +356,14 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var TableHeader = function (props) {
+exports.TableHeader = function (props) {
     var _a = props.data, data = _a === void 0 ? [] : _a;
     return (React.createElement("div", { className: "tableHeader" }, data.map(function (header, index) {
         return React.createElement("div", { key: index, className: "tableColumn " + (header.label === "S.No." ? "snoCol" : ""), style: { width: (header.width || 0) + "%" } },
             React.createElement("div", { className: "content" }, header.label));
     })));
 };
-var TableRows = function (props) {
+exports.TableRows = function (props) {
     var _a = props.data, data = _a === void 0 ? [] : _a;
     var openViewCustomerView = function (rowData) {
         var customerID = rowData.filter(function (rowItem) { return rowItem.label === "Customer ID"; })[0].value;
@@ -397,7 +376,7 @@ var TableRows = function (props) {
         })));
     })));
 };
-var TablePagination = function (props) {
+exports.TablePagination = function (props) {
     var _a = props.totalPages, totalPages = _a === void 0 ? 1 : _a, _b = props.selectedPage, selectedPage = _b === void 0 ? 1 : _b, _c = props.setSelectedPage, setSelectedPage = _c === void 0 ? function () { } : _c, _d = props.setPageSize, setPageSize = _d === void 0 ? function () { } : _d;
     var incrementPageNum = function () {
         setSelectedPage(selectedPage + 1);
@@ -448,10 +427,10 @@ exports.CustomersList = function (props) {
         setPageSize: setPageSize,
     };
     return (React.createElement(React.Fragment, null,
-        React.createElement(TableHeader, { data: data[0] }),
+        React.createElement(exports.TableHeader, { data: data[0] }),
         React.createElement("div", { className: "tableContainer" },
-            React.createElement(TableRows, __assign({}, tableRowsData))),
-        React.createElement(TablePagination, __assign({}, tablePaginationProps))));
+            React.createElement(exports.TableRows, __assign({}, tableRowsData))),
+        React.createElement(exports.TablePagination, __assign({}, tablePaginationProps))));
 };
 
 
@@ -477,7 +456,7 @@ var getHeaderTitle = function (viewMode) {
         default: return "Customer List";
     }
 };
-var Header = function (props) {
+exports.Header = function (props) {
     var viewMode = props.viewMode, openCustomerListView = props.openCustomerListView, openAddCustomerView = props.openAddCustomerView;
     var headerTitle = getHeaderTitle(viewMode);
     return (React.createElement("div", { className: "header" },
@@ -487,11 +466,10 @@ var Header = function (props) {
                 React.createElement("i", { className: "fa fa-plus" }),
                 "Add Customer"),
         viewMode !== main_constants_1.CUSTOMERS_LIST &&
-            React.createElement("div", { className: "newCustomer", onClick: openCustomerListView },
+            React.createElement("div", { className: "listCustomer", onClick: openCustomerListView },
                 React.createElement("i", { className: "fa fa-user" }),
                 "Customers List")));
 };
-exports.default = Header;
 
 
 /***/ }),
@@ -523,7 +501,7 @@ var typeToColorMap = function (type) {
         default: return "";
     }
 };
-var NotificationItem = function (props) {
+exports.NotificationItem = function (props) {
     var id = props.id, type = props.type, message = props.message;
     return (React.createElement("div", { key: id, className: "notificationItem " + typeToColorMap(type) },
         React.createElement("i", { className: "notificationIcon " + typeToIconMap(type) }),
@@ -532,7 +510,7 @@ var NotificationItem = function (props) {
 exports.Notification = function (props) {
     var notifications = props.notifications;
     return (React.createElement("div", { className: "notificationContainer" }, notifications.map(function (notification) {
-        return React.createElement(NotificationItem, { id: notification.id, type: notification.type, message: notification.message });
+        return React.createElement(exports.NotificationItem, { key: notification.id, id: notification.id, type: notification.type, message: notification.message });
     })));
 };
 
@@ -550,8 +528,9 @@ exports.Notification = function (props) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var main_constants_1 = __webpack_require__(/*! ../../main.constants */ "./main.constants.ts");
 exports.ViewCustomer = function (props) {
-    var _a = props.data, customerID = _a.customerID, _b = _a.name, first = _b.first, last = _b.last, gender = _a.gender, birthday = _a.birthday, lastContact = _a.lastContact, customerLifetimeValue = _a.customerLifetimeValue;
+    var _a = props.data, _b = _a === void 0 ? main_constants_1.emptyCustomer : _a, customerID = _b.customerID, _c = _b.name, first = _c.first, last = _c.last, gender = _b.gender, birthday = _b.birthday, lastContact = _b.lastContact, customerLifetimeValue = _b.customerLifetimeValue;
     var openEditCustomerView = function () {
         props.openEditCustomerView(customerID);
     };
@@ -567,39 +546,41 @@ exports.ViewCustomer = function (props) {
         });
         return data[0] + "-" + data[1] + "-" + data[2] + "T" + data[3] + ":" + data[4] + ":" + data[5];
     };
-    return (React.createElement("div", { className: "viewCustomerWrapper" },
-        React.createElement("div", { className: "viewCustomerContainer" },
-            React.createElement("div", { className: "fields" },
-                React.createElement("div", { className: "fieldRow" },
-                    React.createElement("div", { className: "fieldLabel" }, "Customer ID"),
-                    React.createElement("div", { className: "fieldValue" },
-                        React.createElement("div", { className: "inputValue" }, customerID))),
-                React.createElement("div", { className: "fieldRow" },
-                    React.createElement("div", { className: "fieldLabel" }, "First Name"),
-                    React.createElement("div", { className: "fieldValue" },
-                        React.createElement("div", { className: "inputValue" }, first))),
-                React.createElement("div", { className: "fieldRow" },
-                    React.createElement("div", { className: "fieldLabel" }, "Last Name"),
-                    React.createElement("div", { className: "fieldValue" },
-                        React.createElement("div", { className: "inputValue" }, last))),
-                React.createElement("div", { className: "fieldRow" },
-                    React.createElement("div", { className: "fieldLabel" }, "Birth Date"),
-                    React.createElement("div", { className: "fieldValue" },
-                        React.createElement("div", { className: "inputValue" }, birthday))),
-                React.createElement("div", { className: "fieldRow" },
-                    React.createElement("div", { className: "fieldLabel" }, "Gender"),
-                    React.createElement("div", { className: "fieldValue" },
-                        React.createElement("div", { className: "inputValue" }, gender === "m" ? "Male" : (gender === "w" ? "Female" : "Other")))),
-                React.createElement("div", { className: "fieldRow" },
-                    React.createElement("div", { className: "fieldLabel" }, "Lifetime Value"),
-                    React.createElement("div", { className: "fieldValue" },
-                        React.createElement("div", { className: "inputValue" }, customerLifetimeValue))),
-                React.createElement("div", { className: "fieldRow" },
-                    React.createElement("div", { className: "fieldLabel" }, "Last Contact"),
-                    React.createElement("div", { className: "fieldValue" },
-                        React.createElement("div", { className: "inputValue" }, lastContact))),
-                React.createElement("div", { className: "editCustomerButton", onClick: openEditCustomerView }, "Edit Customer"),
-                React.createElement("div", { className: "deleteCustomerButton", onClick: deleteCustomer }, "Delete Customer")))));
+    return (!props.data || !props.data.customerID) ? (React.createElement("div", { className: "invalidCustomerIdContainer" },
+        React.createElement("div", { className: "invalidCustomerId" }, "Invalid Customer ID"))) :
+        (React.createElement("div", { className: "viewCustomerWrapper" },
+            React.createElement("div", { className: "viewCustomerContainer" },
+                React.createElement("div", { className: "fields" },
+                    React.createElement("div", { className: "fieldRow" },
+                        React.createElement("div", { className: "fieldLabel" }, "Customer ID"),
+                        React.createElement("div", { className: "fieldValue" },
+                            React.createElement("div", { className: "inputValue" }, customerID))),
+                    React.createElement("div", { className: "fieldRow" },
+                        React.createElement("div", { className: "fieldLabel" }, "First Name"),
+                        React.createElement("div", { className: "fieldValue" },
+                            React.createElement("div", { className: "inputValue" }, first))),
+                    React.createElement("div", { className: "fieldRow" },
+                        React.createElement("div", { className: "fieldLabel" }, "Last Name"),
+                        React.createElement("div", { className: "fieldValue" },
+                            React.createElement("div", { className: "inputValue" }, last))),
+                    React.createElement("div", { className: "fieldRow" },
+                        React.createElement("div", { className: "fieldLabel" }, "Birth Date"),
+                        React.createElement("div", { className: "fieldValue" },
+                            React.createElement("div", { className: "inputValue" }, birthday))),
+                    React.createElement("div", { className: "fieldRow" },
+                        React.createElement("div", { className: "fieldLabel" }, "Gender"),
+                        React.createElement("div", { className: "fieldValue" },
+                            React.createElement("div", { className: "inputValue" }, gender === "m" ? "Male" : (gender === "w" ? "Female" : "Other")))),
+                    React.createElement("div", { className: "fieldRow" },
+                        React.createElement("div", { className: "fieldLabel" }, "Lifetime Value"),
+                        React.createElement("div", { className: "fieldValue" },
+                            React.createElement("div", { className: "inputValue" }, customerLifetimeValue))),
+                    React.createElement("div", { className: "fieldRow" },
+                        React.createElement("div", { className: "fieldLabel" }, "Last Contact"),
+                        React.createElement("div", { className: "fieldValue" },
+                            React.createElement("div", { className: "inputValue" }, lastContact))),
+                    React.createElement("div", { className: "editCustomerButton", onClick: openEditCustomerView }, "Edit Customer"),
+                    React.createElement("div", { className: "deleteCustomerButton", onClick: deleteCustomer }, "Delete Customer")))));
 };
 
 
@@ -645,7 +626,6 @@ var customers_1 = __webpack_require__(/*! ../../actions/customers */ "./actions/
 var CustomersList_1 = __webpack_require__(/*! ../../components/CustomerList/CustomersList */ "./components/CustomerList/CustomersList.tsx");
 var main_constants_1 = __webpack_require__(/*! ../../main.constants */ "./main.constants.ts");
 var AddEditCustomer_1 = __webpack_require__(/*! ../../components/AddEditCustomer/AddEditCustomer */ "./components/AddEditCustomer/AddEditCustomer.tsx");
-var view_1 = __webpack_require__(/*! ../../actions/view */ "./actions/view.ts");
 var Header_1 = __webpack_require__(/*! ../../components/Header/Header */ "./components/Header/Header.tsx");
 var ViewCustomer_1 = __webpack_require__(/*! ../../components/ViewCustomer/ViewCustomer */ "./components/ViewCustomer/ViewCustomer.tsx");
 var Notification_1 = __webpack_require__(/*! ../../components/Notification/Notification */ "./components/Notification/Notification.tsx");
@@ -654,29 +634,33 @@ var App = (function (_super) {
     function App(props) {
         var _this = _super.call(this, props) || this;
         _this.openCustomerListView = function () {
-            _this.props.changeViewMode(main_constants_1.CUSTOMERS_LIST);
+            _this.props.history.push("/");
+            _this.setState(function (prevState) { return ({ viewMode: main_constants_1.CUSTOMERS_LIST }); });
         };
         _this.openAddCustomerView = function () {
+            _this.props.history.push("/");
             _this.setState(function () { return ({ selectedCustomer: null }); });
-            _this.props.changeViewMode(main_constants_1.ADD_CUSTOMER);
+            _this.setState(function (prevState) { return ({ viewMode: main_constants_1.ADD_CUSTOMER }); });
         };
         _this.openEditCustomerView = function (customerID) {
+            _this.props.history.push("/");
             _this.setState(function () { return ({ selectedCustomer: customerID }); });
-            _this.props.changeViewMode(main_constants_1.EDIT_CUSTOMER);
+            _this.setState(function (prevState) { return ({ viewMode: main_constants_1.EDIT_CUSTOMER }); });
         };
         _this.openViewCustomerView = function (customerID) {
+            _this.props.history.push("/viewCustomer/" + customerID);
             _this.setState(function () { return ({ selectedCustomer: customerID }); });
-            _this.props.changeViewMode(main_constants_1.VIEW_CUSTOMER);
+            _this.setState(function (prevState) { return ({ viewMode: main_constants_1.VIEW_CUSTOMER }); });
         };
-        _this.state = { selectedCustomer: null };
+        _this.state = { viewMode: props.viewMode || main_constants_1.CUSTOMERS_LIST, selectedCustomer: props.selectedCustomer || null };
         return _this;
     }
     App.prototype.componentWillMount = function () {
         this.props.fetchAllCustomers();
     };
     App.prototype.render = function () {
-        var _a = this.props, customers = _a.customers, _b = _a.viewMode, viewMode = _b === void 0 ? "" : _b;
-        var _c = this.state.selectedCustomer, selectedCustomer = _c === void 0 ? null : _c;
+        var customers = this.props.customers;
+        var _a = this.state, _b = _a.viewMode, viewMode = _b === void 0 ? main_constants_1.CUSTOMERS_LIST : _b, _c = _a.selectedCustomer, selectedCustomer = _c === void 0 ? null : _c;
         var headerProps = {
             viewMode: viewMode,
             openCustomerListView: this.openCustomerListView,
@@ -701,7 +685,7 @@ var App = (function (_super) {
             notifications: this.props.notifications,
         };
         return (React.createElement(React.Fragment, null,
-            React.createElement(Header_1.default, __assign({}, headerProps)),
+            React.createElement(Header_1.Header, __assign({}, headerProps)),
             viewMode === main_constants_1.VIEW_CUSTOMER && React.createElement(ViewCustomer_1.ViewCustomer, __assign({}, viewCustomerProps)),
             (viewMode === main_constants_1.ADD_CUSTOMER || viewMode === main_constants_1.EDIT_CUSTOMER) && React.createElement(AddEditCustomer_1.AddEditCustomer, __assign({}, addEditCustomerProps)),
             viewMode === main_constants_1.CUSTOMERS_LIST && React.createElement("div", { className: "tableWrapper" },
@@ -713,7 +697,6 @@ var App = (function (_super) {
 var mapStateToProps = function (state) {
     return {
         customers: state.customers,
-        viewMode: state.viewMode,
         notifications: state.notifications,
     };
 };
@@ -722,7 +705,6 @@ var mapDispatchToProps = function (dispatch) {
         fetchAllCustomers: function () { return customers_1.fetchAllCustomers(dispatch); },
         addCustomer: function (values) { return customers_1.addCustomer(dispatch, values); },
         editCustomer: function (values) { return customers_1.editCustomer(dispatch, values); },
-        changeViewMode: function (viewMode) { return dispatch(view_1.changeViewMode(viewMode)); },
         deleteCustomer: function (customerID) { return customers_1.deleteCustomer(dispatch, customerID); },
     };
 };
@@ -754,6 +736,9 @@ exports.UPDATE_NOTIFICATION = 'updateNotification';
 exports.DefaultAppState = {
     customers: [],
     viewMode: '',
+};
+exports.emptyCustomer = {
+    customerID: 0, name: { first: '', last: '' }, gender: '', birthday: '', lastContact: '', customerLifetimeValue: '',
 };
 exports.getRowConfig = function (dataList) {
     return dataList.map(function (data, index) { return [
@@ -793,6 +778,53 @@ exports.getRowConfig = function (dataList) {
             width: 20,
         },
     ]; });
+};
+exports.mockCustomerData = [{
+        label: 'S.No.',
+        value: 1,
+        width: 8,
+    },
+    {
+        label: 'Customer ID',
+        value: 1,
+        width: 8,
+    },
+    {
+        label: 'Name',
+        value: 'mock name',
+        width: 17,
+    },
+    {
+        label: 'Gender',
+        value: 'm',
+        width: 10,
+    },
+    {
+        label: 'Birth Date',
+        value: '',
+        width: 18,
+    },
+    {
+        label: 'Last Contact',
+        value: '',
+        width: 18,
+    },
+    {
+        label: 'Lifetime Value',
+        value: 0,
+        width: 20,
+    }
+];
+exports.mockOriginalCustomerData = {
+    customerID: 1,
+    name: {
+        first: 'mock',
+        last: 'mock',
+    },
+    birthday: 'mock',
+    gender: 'm',
+    lastContact: '1234',
+    customerLifetimeValue: 1234,
 };
 exports.parseDateTime = function (dateTime, time) {
     if (time === void 0) { time = false; }
@@ -836,6 +868,7 @@ var redux_promise_1 = __webpack_require__(/*! redux-promise */ "./node_modules/r
 var reducers_1 = __webpack_require__(/*! ./reducers */ "./reducers/index.ts");
 var AppContainer_1 = __webpack_require__(/*! ./containers/AppContainer/AppContainer */ "./containers/AppContainer/AppContainer.tsx");
 var redux_logger_1 = __webpack_require__(/*! redux-logger */ "./node_modules/redux-logger/dist/redux-logger.js");
+var main_constants_1 = __webpack_require__(/*! ./main.constants */ "./main.constants.ts");
 var store = redux_1.createStore(reducers_1.default, redux_1.applyMiddleware(redux_promise_1.default, redux_logger_1.default));
 var MainApp = (function (_super) {
     __extends(MainApp, _super);
@@ -846,7 +879,14 @@ var MainApp = (function (_super) {
         return (React.createElement(react_redux_1.Provider, { store: store },
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", null,
-                    React.createElement(react_router_dom_1.Route, { path: "*", component: AppContainer_1.default })))));
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: "/viewCustomer/:id", render: function (_a) {
+                            var match = _a.match, history = _a.history;
+                            return React.createElement(AppContainer_1.default, { viewMode: main_constants_1.VIEW_CUSTOMER, selectedCustomer: parseInt(match.params.id), history: history });
+                        } }),
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: "/", render: function (_a) {
+                            var history = _a.history;
+                            return React.createElement(AppContainer_1.default, { history: history });
+                        } })))));
     };
     return MainApp;
 }(React.Component));
@@ -49335,11 +49375,9 @@ var deleteCustomer = function (state, action) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var redux_1 = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 var customer_1 = __webpack_require__(/*! ./customer */ "./reducers/customer.ts");
-var viewReducer_1 = __webpack_require__(/*! ./viewReducer */ "./reducers/viewReducer.ts");
 var notifications_1 = __webpack_require__(/*! ./notifications */ "./reducers/notifications.ts");
 exports.default = redux_1.combineReducers({
     customers: customer_1.customerReducer,
-    viewMode: viewReducer_1.viewReducer,
     notifications: notifications_1.notificationReducer,
 });
 
@@ -49379,28 +49417,6 @@ var updateNotification = function (state, action) {
         }
         return notification;
     });
-};
-
-
-/***/ }),
-
-/***/ "./reducers/viewReducer.ts":
-/*!*********************************!*\
-  !*** ./reducers/viewReducer.ts ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var main_constants_1 = __webpack_require__(/*! ../main.constants */ "./main.constants.ts");
-exports.viewReducer = function (state, action) {
-    if (state === void 0) { state = main_constants_1.CUSTOMERS_LIST; }
-    switch (action.type) {
-        case main_constants_1.CHANGE_VIEW_MODE: return action.payload;
-        default: return state;
-    }
 };
 
 

@@ -1,0 +1,14 @@
+{
+  "env": {
+    "test": {
+      "presets": [["env", {
+        "modules": "commonjs"
+      }], "@babel/preset-env", "@babel/preset-react"],
+      "plugins": ["transform-export-extensions"],
+      "only": [
+        "./**/*.tsx",
+        "node_modules/jest-runtime"
+      ]
+    }
+  }
+}

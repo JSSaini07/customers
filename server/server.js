@@ -18,6 +18,7 @@ const port = process.argv.port || 3000;
 morgan(':method :url :status :res[content-length] - :response-time ms')
 
 app.use('/static',express.static(path.join(__dirname,'../build/')))
+app.use('/viewCustomer/static',express.static(path.join(__dirname,'../build/')))
 
 
 app.use(bodyParser.json())
@@ -39,5 +40,8 @@ app.get('/fetchAllCustomers', fetchAllCustomers);
 app.put('/updateCustomer', updateCustomer);
 app.delete('/deleteCustomer', deleteCustomer);
 app.get('*', pageRoute);
+app.get('*/:id', (req, res) => {
+  res.sendFile(path.join(__dirname,'../../build/','index.html'));
+});
 
 app.listen(port);

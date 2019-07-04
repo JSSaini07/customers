@@ -6,23 +6,25 @@ import {fetchAllCustomers, addCustomer, editCustomer, deleteCustomer} from '../.
 import {CustomersList} from "../../components/CustomerList/CustomersList";
 import {getRowConfig, CUSTOMERS_LIST, ADD_CUSTOMER ,EDIT_CUSTOMER, VIEW_CUSTOMER} from "../../main.constants";
 import { AddEditCustomer } from "../../components/AddEditCustomer/AddEditCustomer";
-import { changeViewMode } from "../../actions/view";
-import Header from "../../components/Header/Header";
+import {Header} from "../../components/Header/Header";
 import { ViewCustomer } from "../../components/ViewCustomer/ViewCustomer";
 import { Notification, NotificationItemProp } from "../../components/Notification/Notification";
+import { History } from "history";
 
 interface AppProps {
   customers: Customer[];
-  viewMode: string;
   notifications: NotificationItemProp[],
   fetchAllCustomers: () => Customer[];
   addCustomer: (values: any) => void;
   editCustomer: (values: any) => void;
   deleteCustomer: (customerID: number) => void;
-  changeViewMode: (viewMode: string) => void;
+  viewMode?: string;
+  selectedCustomer?: number | null;
+  history?: History;
 }
 
 interface AppState {
+  viewMode: string;
   selectedCustomer: number | null;
 }
 
@@ -31,7 +33,7 @@ type AppCombinedProps = AppProps & AppState;
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppCombinedProps) {
     super(props);
-    this.state = {selectedCustomer: null};
+    this.state = {viewMode: props.viewMode || CUSTOMERS_LIST, selectedCustomer: props.selectedCustomer || null};
   }
 
   componentWillMount() {
@@ -39,27 +41,31 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   openCustomerListView = () => {
-    this.props.changeViewMode(CUSTOMERS_LIST);
+    this.props.history.push(`/`);
+    this.setState((prevState) => ({viewMode: CUSTOMERS_LIST}));
   }
 
   openAddCustomerView = () => {
+    this.props.history.push(`/`);
     this.setState(() => ({selectedCustomer: null}));
-    this.props.changeViewMode(ADD_CUSTOMER);
+    this.setState((prevState) => ({viewMode: ADD_CUSTOMER}));
   }
 
   openEditCustomerView = (customerID: number) => {
+    this.props.history.push(`/`);
     this.setState(() => ({selectedCustomer: customerID}));
-    this.props.changeViewMode(EDIT_CUSTOMER);
+    this.setState((prevState) => ({viewMode: EDIT_CUSTOMER}));
   }
 
   openViewCustomerView = (customerID: number) => {
+    this.props.history.push(`/viewCustomer/${customerID}`);
     this.setState(() => ({selectedCustomer: customerID}));
-    this.props.changeViewMode(VIEW_CUSTOMER);
+    this.setState((prevState) => ({viewMode: VIEW_CUSTOMER}));
   }
 
   render() {
-    const {customers, viewMode = ""} = this.props;
-    const {selectedCustomer = null} = this.state;
+    const {customers} = this.props;
+    const {viewMode = CUSTOMERS_LIST, selectedCustomer = null} = this.state;
 
     const headerProps = {
       viewMode,
@@ -107,7 +113,6 @@ class App extends React.Component<AppProps, AppState> {
 const mapStateToProps = (state: AppCombinedProps) => {
   return {
     customers: state.customers,
-    viewMode: state.viewMode,
     notifications: state.notifications,
   };
 }
@@ -117,7 +122,6 @@ const mapDispatchToProps = (dispatch: any) => {
     fetchAllCustomers: () => fetchAllCustomers(dispatch),
     addCustomer: (values: any) => addCustomer(dispatch, values),
     editCustomer: (values: any) => editCustomer(dispatch, values),
-    changeViewMode: (viewMode: string) => dispatch(changeViewMode(viewMode)),
     deleteCustomer: (customerID: number) =>  deleteCustomer(dispatch, customerID),
   };
 }
