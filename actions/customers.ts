@@ -9,7 +9,7 @@ const HEADERS = {
 }
 
 export const fetchAllCustomers = (dispatch: Dispatch) => {
-  fetch('http://localhost:3000/fetchAllCustomers').then((res) =>
+  fetch('/fetchAllCustomers').then((res) =>
     dispatch({
       type: FETCH_ALL_CUSTOMERS,
       payload: res.json(),
@@ -28,7 +28,7 @@ export const addCustomer = (dispatch: Dispatch, values: any) => {
     },
   });
 
-  fetch('http://localhost:3000/addCustomer', {method: "POST", headers: HEADERS, body: JSON.stringify(values)}).then((res) =>
+  fetch('/addCustomer', {method: "POST", headers: HEADERS, body: JSON.stringify(values)}).then((res) =>
     res.ok ? handleSuccess(dispatch, ADD_CUSTOMER, "Successfully added customer", res.json(), notificationId) : handleFail(dispatch, ADD_CUSTOMER, "Couldn't add customer", res.statusText, notificationId)
   ).catch( (err) =>
     handleFail(dispatch, ADD_CUSTOMER, "Couldn't add customer", err, notificationId)
@@ -46,7 +46,7 @@ export const editCustomer = (dispatch: Dispatch, values: any) => {
     },
   })
   
-  fetch('http://localhost:3000/updateCustomer', {method: "PUT", headers: HEADERS, body: JSON.stringify(values)}).then((res) =>
+  fetch('/updateCustomer', {method: "PUT", headers: HEADERS, body: JSON.stringify(values)}).then((res) =>
     res.ok ? handleSuccess(dispatch, EDIT_CUSTOMER, "Successfully edited customer", res.json(), notificationId) : handleFail(dispatch, EDIT_CUSTOMER , "Couldn't edit customer", res.statusText, notificationId)
   ).catch( (err) =>
     handleFail(dispatch, EDIT_CUSTOMER , "Couldn't edit customer", err, notificationId)
@@ -64,7 +64,7 @@ export const deleteCustomer = (dispatch: Dispatch, customerID: any) => {
     },
   })
   
-  fetch(`http://localhost:3000/deleteCustomer?id=${customerID}`, {method: "DELETE"}).then((res) =>
+  fetch(`/deleteCustomer?id=${customerID}`, {method: "DELETE"}).then((res) =>
     res.ok ? handleSuccess(dispatch, DELETE_CUSTOMER, "Successfully deleted customer", res.json(), notificationId) : handleFail(dispatch, DELETE_CUSTOMER , "Couldn't delete customer", res.statusText, notificationId)
   ).catch( (err) =>
     handleFail(dispatch, DELETE_CUSTOMER , "Couldn't delete customer", err, notificationId)
